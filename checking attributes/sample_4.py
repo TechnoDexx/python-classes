@@ -3,18 +3,19 @@ class CardHolder:
     retireage = 59.5
 
     def __init__(self, acct, name, age, addr):
-        self.__acct = acct
+        self.acct = acct
         self.name = name
         self.age = age
         self.addr = addr
 
-    def __getattr__(self, name):
+    def __getattribute__(self, name):
+        superget = object.__getattribute__
         if name == 'acct':
-            return self.__acct[:-3] + '***'
+            return superget(self, 'acct')[:-3] + '***'
         elif name == 'remain':
-            return self.retireage - self.age
+            return superget(self, 'retireage') - superget(self, 'age')
         else:
-            raise AttributeError(name)
+            return superget(self, name)
 
     def __setattr__(self, name, value):
         if name == 'name':
@@ -23,10 +24,9 @@ class CardHolder:
             if value < 0 or value > 150:
                 raise ValueError('invalid age')
         elif name == 'acct':
-            name = '_acct'
             value = value.replace('-', '')
             if len(value) != self.acctlen:
-                raise TypeError('invalid acct number!')
+                raise TypeError('invalid acct number')
         elif name == 'remain':
             raise TypeError('cannot set remain')
         self.__dict__[name] = value
