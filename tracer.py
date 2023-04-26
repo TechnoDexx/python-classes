@@ -1,15 +1,15 @@
-class Tracer:
+class tracer:
     def __init__(self, func):
         self.calls = 0
         self.func = func
 
-    def __call__(self, *args):
+    def __call__(self, *args, **kwargs):
         self.calls += 1
         print('Call {0} to {1}'.format(self.calls, self.func.__name__))
-        self.func(*args)
+        self.func(*args, **kwargs)
 
 
-@Tracer
+@tracer
 def spam(a, b, c):
     print(a, b, c, sep=', ')
 
