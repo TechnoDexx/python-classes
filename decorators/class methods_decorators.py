@@ -1,3 +1,6 @@
+import cProfile
+
+
 def decorator(F):
     def wrapper(*args, **kwargs):
         print('Wrapping function and class method')
