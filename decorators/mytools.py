@@ -2,27 +2,26 @@ import time
 
 
 def timer(label='', trace=True):
-    class Timer:
-        def __init__(self, func):
-            self.func = func
-            self.alltime = 0
-
-        def __call__(self, *args):
+    def OnDecorator(func):
+        def OnCall(*args, **kwargs):
             start = time.process_time()
-            result = self.func(*args)
+            result = func(*args, **kwargs)
             elapsed = time.process_time() - start
-            self.alltime += elapsed
+            OnCall.alltime += elapsed
             if trace:
                 fmt = '%s %s: %.5f, %.5f'
-                values = (label, self.func.__name__, elapsed, self.alltime)
+                values = (label, func.__name__, elapsed, OnCall.alltime)
                 print(fmt % values)
             return result
 
-    return Timer
+        OnCall.alltime = 0
+        return OnCall
+
+    return OnDecorator
 
 
 if __name__ == '__main__':
-    @timer()
+    @timer(trace=False)
     def function(a, b, c):
         print(a + b + c)
 
@@ -33,11 +32,11 @@ if __name__ == '__main__':
             self.b = b
             self.c = c
 
-        @timer(trace=False)
+        @timer(label='>>', trace=False)
         def add(self):
             print(self.a + self.b + self.c)
 
 
     function(1, 2, 3)
-    # X = A(1, 2, 3)
-    # X.add()
+    X = A(1, 2, 3)
+    X.add()

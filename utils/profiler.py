@@ -1,43 +1,33 @@
 import cProfile
 
 
-def profiler(F):
-    def wrapper(*args, **kwargs):
-        print('Profiling function named {0} : \n'.format(F.__name__))
-        prof = cProfile.Profile()
-        prof.enable()
-        F(*args, **kwargs)
-        prof.disable()
-        print(prof.print_stats())
+def profiler(label='', trace=True):
+    def OnDecorator(func):
 
-    return wrapper
+        def OnCall(*args, **kwargs):
+            print('Profiling function named {0} : \n'.format(func.__name__))
+            prof = cProfile.Profile()
+            prof.enable()
+            result = func(*args, **kwargs)
+            prof.disable()
+            if trace:
+                print('{0}{1}'.format(label, prof.print_stats()))
+            return result
+        return OnCall
+    return OnDecorator
 
 
 if __name__ == '__main__':
-    import sys
-    import os
+    @profiler(trace=True)
+    def traced_function(a, b, c):
+        print(a + b + c)
 
-    if sys.gettrace():
-        os.system('clear')
+    class A:
+        @profiler(trace=False)
+        def traced_method(self, a, b, c):
+            return print(a + b + c)
+        
 
-
-        @profiler
-        def S(a, b):
-            print('S result: {0}'.format(a + b))
-            print()
-
-
-        S(5, 6)
-
-
-        class A:
-            @profiler
-            def method(self, x, y):
-                print('method result: {0}'.format(x ** y))
-                print()
-
-
-        Z = A()
-        Z.method(2, 3)
-    else:
-        print('Use Debug Mode for showing Result')
+    traced_function(1, 2, 3)
+    X = A()
+    X.traced_method(1, 2, 3)
