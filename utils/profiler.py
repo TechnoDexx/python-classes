@@ -18,7 +18,7 @@ def profiler(label='', trace=True):
 
 
 if __name__ == '__main__':
-    @profiler(trace=True)
+    @profiler()
     def traced_function(a, b, c):
         print(a + b + c)
 
