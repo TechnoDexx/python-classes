@@ -21,7 +21,7 @@ def timer(label='', trace=True):
 
 
 if __name__ == '__main__':
-    @timer(trace=False)
+    @timer(trace=True)
     def function(a, b, c):
         print(a + b + c)
 
@@ -32,7 +32,7 @@ if __name__ == '__main__':
             self.b = b
             self.c = c
 
-        @timer(label='>>', trace=False)
+        @timer(label='>>', trace=True)
         def add(self):
             print(self.a + self.b + self.c)
 
