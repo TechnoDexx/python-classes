@@ -19,13 +19,13 @@ def rangetest(**argchecks):
             allargs = code.co_varnames[:code.co_argcount]
             funcname = func.__name__
 
-            def OnCall(*pargs, **kwargs):
+            def OnCall(*args, **kwargs):
                 # Все аргументы в кортеже pargs сопоставляются с первыми N
                 # ожидаемыми аргументами по позиции
                 # Остальные либо находятся в словаре kargs, либо опущены, как
                 # аргументы со значениями по умолчанию
                 positionals = list(allargs)
-                positionals = positionals[:len(pargs)]
+                positionals = positionals[:len(args)]
                 for (argname, (low, high)) in argchecks.items():
                     # Для всех аргументов, которые должны быть проверены
                     if argname in kwargs:
@@ -37,7 +37,7 @@ def rangetest(**argchecks):
                     elif argname in positionals:
                         # Аругмент был передан по позиции
                         position = positionals.index(argname)
-                        if pargs[position] < low or pargs[position] > high:
+                        if args[position] < low or args[position] > high:
                             errmsg = '{0}: argument "{1}" not in {2}..{3}'
                             errmsg = errmsg.format(funcname, argname,
                                                    low, high)
@@ -47,7 +47,7 @@ def rangetest(**argchecks):
                         # имеет значение по умолчанию
                         if trace:
                             print('Argument "{0}" defaulted'. format(argname))
-                return func(*pargs, **kwargs)
+                return func(*args, **kwargs)
             return OnCall
     return OnDecorator
 
