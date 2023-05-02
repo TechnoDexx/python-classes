@@ -21,6 +21,10 @@ def timer(label='', trace=True):
 
 
 if __name__ == '__main__':
+    @timer(label='[CCC]==>')
+    def listcomp(N):
+        return [x * 2 for x in range(N)]
+
     @timer(trace=True)
     def function(a, b, c):
         print(a + b + c)
@@ -40,3 +44,4 @@ if __name__ == '__main__':
     function(1, 2, 3)
     X = A(1, 2, 3)
     X.add()
+    print(listcomp(1000))

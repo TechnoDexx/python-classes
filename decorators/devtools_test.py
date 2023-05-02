@@ -43,4 +43,6 @@ if __name__ == '__main__':
     omitargs(d=4, a=1)
     omitargs(1, b=2, d=4)
     omitargs(d=8, c=7, a=1)
+    omitargs(9)
+    omitargs(1)
     birthday(1, 10, 2001)

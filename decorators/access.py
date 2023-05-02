@@ -21,27 +21,30 @@ def trace(*args):
 
 def accessControl(failIf):
 	def OnDecorator(aClass):
-		class onInstance:
-			def __init__(self, *args, **kwargs):
-				self.__wrapped = aClass(*args, **kwargs)
+		if not __debug__:
+			return aClass
+		else:
+			class onInstance:
+				def __init__(self, *args, **kwargs):
+					self.__wrapped = aClass(*args, **kwargs)
 
-			def __getattr__(self, attr):
-				trace('get: ', attr)
-				if failIf(attr):
-					raise TypeError('private attribute fetch: ' + attr)
-				else:
-					return getattr(self.__wrapped, attr)
+				def __getattr__(self, attr):
+					trace('get: ', attr)
+					if failIf(attr):
+						raise TypeError('private attribute fetch: "{0}"'.format(attr))
+					else:
+						return getattr(self.__wrapped, attr)
 
-			def __setattr__(self, attr, value):
-				trace('set: ', attr, value)
-				if attr == '_onInstance__wrapped':
-					self.__dict__[attr] = value
-				elif failIf(attr):
-					raise TypeError('‘private attribute change: ' + attr)
-				else:
-					setattr(self.__wrapped, attr, value)
+				def __setattr__(self, attr, value):
+					trace('set: ', attr, value)
+					if attr == '_onInstance__wrapped':
+						self.__dict__[attr] = value
+					elif failIf(attr):
+						raise TypeError('private attribute change: "{0}"'.format(attr))
+					else:
+						setattr(self.__wrapped, attr, value)
 
-		return onInstance
+			return onInstance
 
 	return OnDecorator
 
