@@ -69,4 +69,4 @@ if __name__ == '__main__':
 	print(X.name)
 	X.name = 'Sue'
 	print(X.name)
-	print(X.name)
+	print(X.age)
