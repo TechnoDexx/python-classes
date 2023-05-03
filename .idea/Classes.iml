@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/checking attributes" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/decorators" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/properties" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/metaclasses" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/metaclasses/add methods to classes" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
